@@ -1,13 +1,59 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap");
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  border: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+* :focus {
+  outline: none !important;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input {
+  border-radius: unset;
+}
+
+button:hover {
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.disclaimer {
+  font-size: 12px;
+  text-align: center;
+  bottom: 24px;
+  right: 0;
+  transform: translate(-50%, 0);
+  font-weight: bold;
+  position: fixed;
+}
+
+.disclaimer a{
+  text-decoration: none;
+  color:  rgb(146, 0, 0);
+}
+
+.loader {
+  border: 4px solid #c5c3c3dc;
+  border-top: 4px solid rgb(146, 0, 0);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .welcome-text {
+    display: none;
+  }
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import firebase from "../../config/firebase";
 
+import Header from "../Header";
 import Home from "../Home";
 import HomeAdmin from "../HomeAdmin";
 import Register from "../Register";
@@ -23,12 +24,17 @@ const App = () => {
 
   return (
     <Router>
+      <Header auth={auth} />
       {auth.isAuth ? (
         <Route
           path="/"
           exact
           component={() =>
-            !auth.dataUser.admin ? <Home dataUser={auth.dataUser} /> : <HomeAdmin />
+            !auth.dataUser.admin ? (
+              <Home dataUser={auth.dataUser} />
+            ) : (
+              <HomeAdmin />
+            )
           }
         />
       ) : (

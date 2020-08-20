@@ -75,14 +75,14 @@ function Login(props) {
         <div className="message">{status.message}</div>
         <button
           style={
-            form.username && form.password ? { backgroundColor: "#EC0000" } : {}
+            form.username && form.password ? { backgroundColor: "#a87640" } : {}
           }
           type="submit"
         >
           {loading ? <div className="loader"></div> : <span>Ingresar</span>}
         </button>
         <div className="bot-links">
-          <p>Si no tenés u olvidaste tu clave y/o usuario</p>
+          <p>Si no tenés usuario</p>
           <a href="/register">Crear clave y usuario</a>
         </div>
 

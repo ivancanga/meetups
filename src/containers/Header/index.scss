@@ -1,0 +1,89 @@
+header {
+  nav {
+    padding: 12px 36px;
+    .nav-container {
+      display: flex;
+      justify-content: center;
+      flex-flow: wrap;
+      align-items: center;
+      font-size: 16px;
+      &__logo a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #ffffff;
+        letter-spacing: 1.5px;
+        text-shadow: rgb(88, 93, 101) 3px 0px 0px,
+          rgb(88, 93, 101) 2.83487px 0.981584px 0px,
+          rgb(88, 93, 101) 2.35766px 1.85511px 0px,
+          rgb(88, 93, 101) 1.62091px 2.52441px 0px,
+          rgb(88, 93, 101) 0.705713px 2.91581px 0px,
+          rgb(88, 93, 101) -0.287171px 2.98622px 0px,
+          rgb(88, 93, 101) -1.24844px 2.72789px 0px,
+          rgb(88, 93, 101) -2.07227px 2.16926px 0px,
+          rgb(88, 93, 101) -2.66798px 1.37182px 0px,
+          rgb(88, 93, 101) -2.96998px 0.42336px 0px,
+          rgb(88, 93, 101) -2.94502px -0.571704px 0px,
+          rgb(88, 93, 101) -2.59586px -1.50383px 0px,
+          rgb(88, 93, 101) -1.96093px -2.27041px 0px,
+          rgb(88, 93, 101) -1.11013px -2.78704px 0px,
+          rgb(88, 93, 101) -0.137119px -2.99686px 0px,
+          rgb(88, 93, 101) 0.850987px -2.87677px 0px,
+          rgb(88, 93, 101) 1.74541px -2.43999px 0px,
+          rgb(88, 93, 101) 2.44769px -1.73459px 0px,
+          rgb(88, 93, 101) 2.88051px -0.838247px 0px;
+      }
+    }
+    .menu {
+      border: 1px solid black;
+      padding: 6px 12px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .logo {
+      background-image: url("../../assets/icon-beer.png");
+      background-repeat: no-repeat;
+      background-position: left bottom;
+      background-size: 100%;
+      width: 64px;
+      height: 64px;
+    }
+    .user_info {
+      display: flex;
+      list-style: none;
+      align-items: center;
+      &__name {
+        border: 1px solid black;
+        padding: 6px 12px;
+        border-radius: 30px;
+        cursor: pointer;
+        &::after {
+          content: ">";
+          padding: 6px;
+        }
+      }
+    }
+    .logout {
+      display: block;
+      width: 28px;
+      height: 28px;
+      background-image: url("../../assets/icon-logout.png");
+      background-size: cover;
+      margin-left: 12px;
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  header {
+    nav {
+      padding: 0 12px;
+      .nav-container {
+        justify-content: space-evenly;
+        gap: 6px;
+      }
+    }
+  }
+}

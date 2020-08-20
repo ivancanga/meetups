@@ -111,7 +111,7 @@ function Register() {
         <div className="message">{status.message}</div>
         <button
           style={
-            form.username && form.password ? { backgroundColor: "#EC0000" } : {}
+            form.username && form.password ? { backgroundColor: "#a87640" } : {}
           }
           type="submit"
         >

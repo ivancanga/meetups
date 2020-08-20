@@ -1,35 +1,11 @@
 .login {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
   background-color: #fff;
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  background-size: 90%;
-  z-index: -1;
-
-  .welcome-text {
-    margin: 0;
-    color: #1b1b1b;
-    font-size: 45px;
-    font-weight: 300;
-    line-height: 52px;
-    position: absolute;
-    left: 66px;
-    top: 120px;
-  }
-
+  margin: 24px;
   .login-form {
     margin: 0 auto;
-    width: 28%;
-    min-width: 500px;
-    float: right;
-    height: 100vh;
-    padding: 60px;
+    margin-top: 48px;
+    max-width: 320px;
+    padding: 40px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.502);
     background: white;
 
@@ -63,10 +39,10 @@
         font-weight: 500;
       }
     }
-    .message{
-      font-size: 14px;
+    .message {
+      font-size: 13px;
       margin-top: 6px;
-      color: rgb(139, 0, 0);
+      color: #a87640;
     }
 
     .bot-links {
@@ -79,7 +55,7 @@
       border-radius: 5px;
       margin: 12px 0;
       a {
-        color: #ec0000;
+        color: #a87640;
         text-decoration: none;
         font-weight: 700;
         padding: 3px;
@@ -99,7 +75,7 @@
     .login-form {
       width: 100%;
       min-width: unset;
-      padding: 60px 24px;
+      padding: 24px;
     }
   }
 }

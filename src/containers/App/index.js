@@ -18,7 +18,6 @@ const App = () => {
       .get()
       .then((doc) => {
         setAuth({ isAuth: true, dataUser: doc.data() });
-        console.log(auth.dataUser)
       });
   };
 

@@ -1,16 +1,70 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "../../components/DatePicker";
-import Weather from "../../components/Weather";
+import { Tooltip } from "@material-ui/core";
 
 import firebase from "../../config/firebase";
 
 import "./index.scss";
 
 function HomeAdmin() {
-  const [loading, setLoading] = useState();
-  const [weather, setWeather] = useState({});
+  const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState();
-  const [message, setMessage] = useState();
+  const [meetups, setMeetups] = useState([]);
+
+  useEffect(() => {
+    getMeetups();
+  }, []);
+
+  const getMeetups = () => {
+    const meetups = [];
+    firebase.db
+      .collection("/meetups")
+      .where("date", ">", new Date(Date.now()))
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.docs.forEach((doc) => {
+          meetups.push(doc.data());
+        });
+        getWeather(meetups).then((meetups) => setMeetups(meetups));
+      });
+  };
+
+  // Refactor variables en .env
+  const api = {
+    base: "https://api.openweathermap.org/data/2.5/onecall",
+    location: "lat=-34.5780655&lon=-58.4265317",
+    key: "967884c26af641b5f50d89fe95b68545",
+  };
+
+  const getWeather = (meetups) => {
+    const now = new Date();
+    const oneWeekFromNow = new Date().setDate(now.getDate() + 7);
+
+    const weather = fetch(
+      `${api.base}?APPID=${api.key}&${api.location}&units=metric&exclude=current,minutely,hourly`
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        const meetupsWeather = [];
+        meetups.forEach((i) => {
+          let timestamp = i.date.seconds * 1000;
+          console.log(i, timestamp);
+          // If day is in range of 7 days (api limit) until now
+          if (timestamp < oneWeekFromNow) {
+            // Getting day number for obtain value from weather object index
+            let day =
+              new Date(timestamp).getUTCDate() - new Date().getUTCDate();
+            console.log(day);
+            i.temp = data.daily[day].temp;
+          }
+          meetupsWeather.push(i);
+        });
+        return meetupsWeather;
+      });
+    return weather;
+  };
 
   let dataForm = {
     name: "",
@@ -30,6 +84,7 @@ function HomeAdmin() {
   };
 
   const handleSubmit = (e) => {
+    setLoading(!loading);
     e.preventDefault();
     form.date = selectedDate;
     form.assistants = [];
@@ -41,59 +96,26 @@ function HomeAdmin() {
       })
       .then(() => {
         console.log("Meetup agendada a la base de datos.");
+        getMeetups();
+        setLoading(loading);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  useEffect(() => {
-    setLoading(!loading);
-  }, [weather, message]);
-
-  // Refactor variables en .env
-  const api = {
-    base: "https://api.openweathermap.org/data/2.5/onecall",
-    location: "lat=-34.5780655&lon=-58.4265317",
-    key: "967884c26af641b5f50d89fe95b68545",
-  };
-
-  const getWeatherApi = (day) => {
-    setLoading(true);
-    fetch(
-      `${api.base}?APPID=${api.key}&${api.location}&units=metric&exclude=current,minutely,hourly`
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data.daily[day].temp);
-        setWeather(data.daily[day].temp);
-      });
-  };
-
   return (
     <>
-      <div className="Home schedule-admin">
+      <div className="schedule-admin Home">
         <div className="schedule-admin_title">
-          <h4>Agendar nueva meetup, Buenos Aires</h4>
+          <h4>Agendar nueva meetup</h4>
         </div>
         <div className="schedule-admin_wrapper">
           <div className="schedule wrapper">
             <p className="schedule_title icon">
               Elegí una fecha para el evento
             </p>
-            <DatePicker
-              getWeatherApi={getWeatherApi}
-              setMessage={setMessage}
-              setSelectedDate={setSelectedDate}
-            />
-          </div>
-
-          <div className="weather wrapper">
-            <p className="weather_title icon">Mirá como va a estar el clima</p>
-            {loading ? <div>Cargando...</div> : <Weather weather={weather} />}
-            {message && <div>{message}</div>}
+            <DatePicker setSelectedDate={setSelectedDate} />
           </div>
 
           <form className="form wrapper" onSubmit={handleSubmit}>
@@ -122,9 +144,68 @@ function HomeAdmin() {
               }
               type="submit"
             >
-              Agendar meetup
+              {loading ? (
+                <div className="loader"></div>
+              ) : (
+                <span>Agendar meetup</span>
+              )}
             </button>
           </form>
+        </div>
+      </div>
+
+      <div className="schedule-list Home">
+        <div className="schedule-list_title">
+          <h4>Meetups agendadas</h4>
+          <p
+            title="Refrescar meetups"
+            className="refresh"
+            onClick={() => getMeetups()}
+          ></p>
+        </div>
+        <div className="schedule-list_wrapper">
+          {meetups.length ? (
+            meetups.map((meetup, key) => (
+              <div className="meetup-wrapper" key={key}>
+                <p className="meetup-date">
+                  {new Date(meetup.date.seconds * 1000).getDate()}/
+                  <span className="month">
+                    {new Date(meetup.date.seconds * 1000).getMonth() + 1}
+                  </span>
+                </p>
+                <div className="meetup-weather">
+                  <p className="weather-wrapper">
+                    {meetup.temp ? (
+                      <>
+                        <span className="weather"></span>
+                        <span>{meetup.temp.max.toFixed(1)}°C</span>
+                      </>
+                    ) : (
+                      <>
+                        <Tooltip
+                          arrow={true}
+                          title="La temperatura se mostrará cuando falten 7 días o menos para el evento"
+                        >
+                          <span className="unavailable"></span>
+                        </Tooltip>
+                        <span className="alert"></span>
+                      </>
+                    )}
+                  </p>
+                </div>
+                <p className="meetup-assistants">
+                  <span className="people"></span>
+                  {meetup.assistants.length}
+                </p>
+                <div>
+                  <p className="meetup-name">{meetup.name}</p>
+                  <p className="meetup-description">{meetup.description}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>Aún no hay meetups agendadas.</p>
+          )}
         </div>
       </div>
     </>

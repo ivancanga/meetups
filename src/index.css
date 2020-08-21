@@ -43,6 +43,31 @@ button:hover {
   animation: spin 2s linear infinite;
 }
 
+.refresh{
+  width: 24px;
+  height: 24px;
+  background-image: url("./assets/icon-refresh.png");
+  cursor: pointer;
+}
+
+.alert::after{
+  content: "!";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  color: white;
+  background: red;
+  width: 14px;
+  padding: 0 4px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.Home {
+  background-color: #eeeeee;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

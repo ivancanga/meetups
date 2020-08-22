@@ -3,3 +3,95 @@
   border: 0;
   box-sizing: border-box;
 }
+
+.schedule-list {
+  padding: 24px 0;
+  &_title {
+    position: relative;
+    max-width: 50vw;
+    margin: 24px auto;
+    font-size: 22px;
+    .refresh {
+      position: absolute;
+      top: 0;
+      right: 12px;
+    }
+  }
+  &_wrapper {
+    background-color: white;
+    margin: 0 auto;
+    padding: 24px;
+    border-radius: 5px;
+    max-width: 50vw;
+    margin: 0 auto;
+  }
+  .meetup-wrapper {
+    border-radius: 6px;
+    margin: 18px 12px;
+    padding: 12px;
+    display: flex;
+    -webkit-box-shadow: 0px 5px 13px -6px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 5px 13px -6px rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    &:hover {
+      transform: scale(1.05);
+    }
+    .meetup {
+      &-date {
+        width: 100px;
+        height: 60px;
+        border: 1px solid black;
+        font-size: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-left: 12px solid #af7b43;
+        border-radius: 6px;
+        margin-right: 12px;
+        .month {
+          font-size: 24px;
+        }
+      }
+      &-weather {
+        margin: 0 12px;
+        .weather-wrapper {
+          display: flex;
+          flex-flow: column;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          width: 40px;
+          position: relative;
+        }
+        .weather {
+          background-image: url("../../assets/icon-weather.png");
+          width: 30px;
+          height: 30px;
+          display: block;
+        }
+        .unavailable {
+          background-image: url("../../assets/icon-unavailable.png");
+          background-size: 30px;
+          width: 30px;
+          height: 30px;
+          display: block;
+        }
+      }
+      &-assistants {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 24px;
+        margin: 0 12px;
+        transition: 0.2s ease-in-out;
+        .people {
+          background-image: url("../../assets/icon-people.png");
+          width: 30px;
+          height: 30px;
+          display: block;
+        }
+      }
+    }
+  }
+}

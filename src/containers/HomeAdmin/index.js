@@ -1,70 +1,21 @@
 import React, { useState, useEffect } from "react";
-import DatePicker from "../../components/DatePicker";
-import { Tooltip } from "@material-ui/core";
 
-import firebase from "../../config/firebase";
+import DatePicker from "../../components/DatePicker";
+import Meetup from "../../components/Meetup";
+
+import firebaseServices from "../../services/firebase-services";
 
 import "./index.scss";
 
 function HomeAdmin() {
+  const [status, setStatus] = useState({});
   const [loading, setLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [meetups, setMeetups] = useState([]);
 
   useEffect(() => {
-    getMeetups();
+    firebaseServices.getMeetups(setMeetups);
   }, []);
-
-  const getMeetups = () => {
-    const meetups = [];
-    firebase.db
-      .collection("/meetups")
-      .where("date", ">", new Date(Date.now()))
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.docs.forEach((doc) => {
-          meetups.push(doc.data());
-        });
-        getWeather(meetups).then((meetups) => setMeetups(meetups));
-      });
-  };
-
-  // Refactor variables en .env
-  const api = {
-    base: "https://api.openweathermap.org/data/2.5/onecall",
-    location: "lat=-34.5780655&lon=-58.4265317",
-    key: "967884c26af641b5f50d89fe95b68545",
-  };
-
-  const getWeather = (meetups) => {
-    const now = new Date();
-    const oneWeekFromNow = new Date().setDate(now.getDate() + 7);
-
-    const weather = fetch(
-      `${api.base}?APPID=${api.key}&${api.location}&units=metric&exclude=current,minutely,hourly`
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        const meetupsWeather = [];
-        meetups.forEach((i) => {
-          let timestamp = i.date.seconds * 1000;
-          console.log(i, timestamp);
-          // If day is in range of 7 days (api limit) until now
-          if (timestamp < oneWeekFromNow) {
-            // Getting day number for obtain value from weather object index
-            let day =
-              new Date(timestamp).getUTCDate() - new Date().getUTCDate();
-            console.log(day);
-            i.temp = data.daily[day].temp;
-          }
-          meetupsWeather.push(i);
-        });
-        return meetupsWeather;
-      });
-    return weather;
-  };
 
   let dataForm = {
     name: "",
@@ -84,20 +35,23 @@ function HomeAdmin() {
   };
 
   const handleSubmit = (e) => {
-    setLoading(!loading);
     e.preventDefault();
+    setLoading(!loading);
     form.date = selectedDate;
     form.assistants = [];
-    firebase.db
-      .collection("meetups")
-      .doc()
-      .set({
-        ...form,
-      })
+    firebaseServices
+      .createMeetup(form)
       .then(() => {
-        console.log("Meetup agendada a la base de datos.");
-        getMeetups();
+        firebaseServices.getMeetups(setMeetups);
         setLoading(loading);
+        setForm(dataForm);
+        setStatus({
+          message:
+            "Meetup agendada con éxito. El clima se mostrará una semana antes de la fecha del evento.",
+        });
+        setTimeout(() => {
+          setStatus({});
+        }, 3500);
       })
       .catch((err) => {
         console.log(err);
@@ -115,7 +69,10 @@ function HomeAdmin() {
             <p className="schedule_title icon">
               Elegí una fecha para el evento
             </p>
-            <DatePicker setSelectedDate={setSelectedDate} />
+            <DatePicker
+              setSelectedDate={setSelectedDate}
+              selectedDate={selectedDate}
+            />
           </div>
 
           <form className="form wrapper" onSubmit={handleSubmit}>
@@ -151,6 +108,7 @@ function HomeAdmin() {
               )}
             </button>
           </form>
+          {status.message && <p className="message">{status.message}</p>}
         </div>
       </div>
 
@@ -160,48 +118,13 @@ function HomeAdmin() {
           <p
             title="Refrescar meetups"
             className="refresh"
-            onClick={() => getMeetups()}
+            onClick={() => firebaseServices.getMeetups(setMeetups)}
           ></p>
         </div>
         <div className="schedule-list_wrapper">
           {meetups.length ? (
             meetups.map((meetup, key) => (
-              <div className="meetup-wrapper" key={key}>
-                <p className="meetup-date">
-                  {new Date(meetup.date.seconds * 1000).getDate()}/
-                  <span className="month">
-                    {new Date(meetup.date.seconds * 1000).getMonth() + 1}
-                  </span>
-                </p>
-                <div className="meetup-weather">
-                  <p className="weather-wrapper">
-                    {meetup.temp ? (
-                      <>
-                        <span className="weather"></span>
-                        <span>{meetup.temp.max.toFixed(1)}°C</span>
-                      </>
-                    ) : (
-                      <>
-                        <Tooltip
-                          arrow={true}
-                          title="La temperatura se mostrará cuando falten 7 días o menos para el evento"
-                        >
-                          <span className="unavailable"></span>
-                        </Tooltip>
-                        <span className="alert"></span>
-                      </>
-                    )}
-                  </p>
-                </div>
-                <p className="meetup-assistants">
-                  <span className="people"></span>
-                  {meetup.assistants.length}
-                </p>
-                <div>
-                  <p className="meetup-name">{meetup.name}</p>
-                  <p className="meetup-description">{meetup.description}</p>
-                </div>
-              </div>
+              <Meetup meetup={meetup} key={key} admin={true} />
             ))
           ) : (
             <p>Aún no hay meetups agendadas.</p>

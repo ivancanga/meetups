@@ -33,7 +33,7 @@ const App = () => {
             !auth.dataUser.admin ? (
               <Home dataUser={auth.dataUser} />
             ) : (
-              <HomeAdmin />
+              <HomeAdmin dataUser={auth.dataUser} />
             )
           }
         />

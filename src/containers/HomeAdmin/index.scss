@@ -12,6 +12,7 @@
     font-size: 22px;
   }
   &_wrapper {
+    position: relative;
     display: flex;
     justify-content: center;
     gap: 72px;
@@ -20,6 +21,7 @@
     margin: 0 auto;
     padding: 24px;
     border-radius: 5px;
+    padding-bottom: 48px;
     .MuiPickersStaticWrapper-staticWrapperRoot {
       width: fit-content;
       .MuiPickersDay-daySelected {
@@ -85,6 +87,14 @@
         color: #a87640;
       }
     }
+  }
+  .message {
+    position: absolute;
+    bottom: 12px;
+    font-size: 12px;
+    padding: 12px;
+    background: #90ee9040;
+    border-radius: 5px;
   }
 }
 

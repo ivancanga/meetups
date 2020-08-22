@@ -3,12 +3,11 @@ import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { es } from "date-fns/locale";
 
-export default function BasicDatePicker({ setSelectedDate }) {
-  const [selectedDate, handleDateChange] = useState(new Date());
-
-  useEffect(() => {
-    setSelectedDate(selectedDate);
-  }, [selectedDate]);
+export default function BasicDatePicker({ setSelectedDate, selectedDate }) {
+  
+  const handleChange = (e) => {
+    setSelectedDate(e);
+  };
 
   return (
     <MuiPickersUtilsProvider locale={es} utils={DateFnsUtils}>
@@ -16,7 +15,7 @@ export default function BasicDatePicker({ setSelectedDate }) {
         disableToolbar
         variant="static"
         value={selectedDate}
-        onChange={handleDateChange}
+        onChange={handleChange}
         autoOk={true}
         disablePast={true}
         emptyLabel=""

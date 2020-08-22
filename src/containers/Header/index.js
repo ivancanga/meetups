@@ -14,6 +14,16 @@ function Header(props) {
               <h1>Meetupbeers</h1>
             </Link>
           </div>
+          {props.auth.isAuth && (
+            <div className="user_info">
+              <li className="user_info__name">
+                <b>{props.auth.dataUser.name}</b>
+              </li>
+              <li>
+                <a className="logout" href="/"></a>
+              </li>
+            </div>
+          )}
         </div>
       </nav>
     </header>

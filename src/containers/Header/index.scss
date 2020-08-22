@@ -54,13 +54,12 @@ header {
       display: flex;
       list-style: none;
       align-items: center;
+      position: absolute;
+      right: 24px;
       &__name {
-        border: 1px solid black;
         padding: 6px 12px;
-        border-radius: 30px;
-        cursor: pointer;
-        &::after {
-          content: ">";
+        &::before {
+          content: "Bienvenido,";
           padding: 6px;
         }
       }

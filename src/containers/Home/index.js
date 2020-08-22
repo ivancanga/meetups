@@ -8,9 +8,10 @@ import "./index.scss";
 
 function Home() {
   const [meetups, setMeetups] = useState([]);
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
-    firebaseServices.getMeetups(setMeetups);
+    firebaseServices.getMeetups(setMeetups, setUpdating);
   }, []);
 
   return (
@@ -20,12 +21,16 @@ function Home() {
         <p
           title="Refrescar meetups"
           className="refresh"
-          onClick={() => firebaseServices.getMeetups(setMeetups)}
+          onClick={() => firebaseServices.getMeetups(setMeetups, setUpdating)}
         ></p>
       </div>
       <div className="schedule-list_wrapper">
-        {meetups.length ? (
-          meetups.map((meetup, key) => <Meetup meetup={meetup} key={key} />)
+        {updating ? (
+          <div className="updater"></div>
+        ) : meetups.length ? (
+          meetups.map((meetup, key) => (
+            <Meetup meetup={meetup} key={key} admin={true} />
+          ))
         ) : (
           <p>Aún no hay meetups agendadas.</p>
         )}

@@ -46,7 +46,7 @@ function Meetup({ meetup, admin }) {
         <p className="meetup-description">{meetup.description}</p>
       </div>
       {admin &&
-        (meetup.assistants.length > 0 ? (
+        (meetup.temp && meetup.assistants.length ? (
           <div>
             Necesitás {meetup.data.birras} birras, encargá {meetup.data.cajon}{" "}
             cajon/es.

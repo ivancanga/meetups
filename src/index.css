@@ -43,6 +43,17 @@ button:hover {
   animation: spin 2s linear infinite;
 }
 
+
+.updater {
+  border: 6px solid #ffffffdc;
+  border-top: 6px solid #f8ab58;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
 .refresh{
   width: 24px;
   height: 24px;

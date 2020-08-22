@@ -10,11 +10,12 @@ import "./index.scss";
 function HomeAdmin() {
   const [status, setStatus] = useState({});
   const [loading, setLoading] = useState(false);
+  const [updating, setUpdating] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [meetups, setMeetups] = useState([]);
 
   useEffect(() => {
-    firebaseServices.getMeetups(setMeetups);
+    firebaseServices.getMeetups(setMeetups, setUpdating);
   }, []);
 
   let dataForm = {
@@ -36,26 +37,28 @@ function HomeAdmin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(!loading);
-    form.date = selectedDate;
-    form.assistants = [];
-    firebaseServices
-      .createMeetup(form)
-      .then(() => {
-        firebaseServices.getMeetups(setMeetups);
-        setLoading(loading);
-        setForm(dataForm);
-        setStatus({
-          message:
-            "Meetup agendada con éxito. El clima se mostrará una semana antes de la fecha del evento.",
+    if (form.name.trim().length !== 0) {
+      setLoading(true);
+      form.date = selectedDate;
+      form.assistants = [];
+      firebaseServices
+        .createMeetup(form)
+        .then(() => {
+          firebaseServices.getMeetups(setMeetups, setUpdating);
+          setLoading(false);
+          setForm(dataForm);
+          setStatus({
+            message:
+              "Meetup agendada con éxito. El clima se mostrará una semana antes de la fecha del evento.",
+          });
+          setTimeout(() => {
+            setStatus({});
+          }, 3500);
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        setTimeout(() => {
-          setStatus({});
-        }, 3500);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }
   };
 
   return (
@@ -84,6 +87,7 @@ function HomeAdmin() {
               autoComplete="off"
               onChange={handleChange}
               value={form.name}
+              required
             />
             <textarea
               id="description"
@@ -118,13 +122,15 @@ function HomeAdmin() {
           <p
             title="Refrescar meetups"
             className="refresh"
-            onClick={() => firebaseServices.getMeetups(setMeetups)}
+            onClick={() => firebaseServices.getMeetups(setMeetups, setUpdating)}
           ></p>
         </div>
         <div className="schedule-list_wrapper">
-          {meetups.length ? (
-            meetups.map((meetup, key) => (
-              <Meetup meetup={meetup} key={key} admin={true} />
+          {updating ? (
+            <div className="updater"></div>
+          ) : meetups.length ? (
+            meetups.map((meetup) => (
+              <Meetup meetup={meetup} key={meetup.uuid} admin={true} />
             ))
           ) : (
             <p>Aún no hay meetups agendadas.</p>

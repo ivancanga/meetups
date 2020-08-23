@@ -1,68 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Meetups & Birras
 
-## Available Scripts
+Desafío técnico meetups para Santander Rio Tecnología. Implementación de web SPA responsiva usando React (hooks) + API Firebase como db + API Openweather. La aplicación brinda un servicio para agendar meetups, saber la temperatura del evento si falta menos de una semana (API limit), y la cantidad de cerveza a comprar dependiendo de los suscriptos a la misma. 
 
-In the project directory, you can run:
+## Live demo:
 
-### `npm start`
+> https://meetupsbirras.netlify.app/
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![desktop_version](https://github.com/ivancanga/meetups/blob/master/src/assets/desktop-version.png)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Features:
 
-### `npm test`
+- Sistema de registro por Firebase.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Sistema de logeo a través de username con autenticación por Firebase.
 
-### `npm run build`
+### Admin
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Panel para agendar una meetup, con un datepicker (MaterialUI), título y descripción de evento.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- Sección de meetups agendadas, informando fecha, clima, asistentes al evento, información, y cantidad de cervezas para pedir a proveedor.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### User
 
-### `npm run eject`
+- Panel visualizando meetups próximas informando fecha, clima, asistentes al evento e información.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Posibilidad de suscribirte a un evento que persiste en la cuenta de usuario de la db.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Technical information:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- La configuración y API keys de Firebase se encuentra en un .env por lo tanto no es posible levantar un go live de forma local. Para ello ver la aplicación en > https://meetupsbirras.netlify.app/.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Puede cambiar la ubicación del evento para que la API traiga diferentes climas. Para ello ir a src > services > API-services.js y cambiar clave location del objeto api por location.berlin o location.buenosaires.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```
+const api = {
+  base: "https://api.openweathermap.org/data/2.5/onecall",
+  location: location.buenosaires,
+  key: "********************",
+};
+```

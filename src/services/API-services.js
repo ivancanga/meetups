@@ -5,7 +5,7 @@ const location = {
 
 const api = {
   base: "https://api.openweathermap.org/data/2.5/onecall",
-  location: location.berlin,
+  location: location.buenosaires,
   key: "967884c26af641b5f50d89fe95b68545",
 };
 
@@ -21,13 +21,21 @@ const getWeather = (meetups) => {
     })
     .then((data) => {
       const meetupsWeather = [];
+      let indexDay = 0;
+      let timestamp = 0;
       meetups.forEach((i) => {
-        let timestamp = i.date.seconds * 1000;
-        // If day is in range of 7 days (api limit) until now
+        timestamp = i.date.seconds * 1000;
+        // If day is in range of 7 days (api limit) from now
         if (timestamp < oneWeekFromNow) {
+
           // Getting day number for obtain value from weather object index
-          let day = new Date(timestamp).getUTCDate() - new Date().getUTCDate();
-          i.temp = data.daily[day].temp;
+          indexDay = new Date(timestamp).getUTCDate() - new Date().getUTCDate();
+
+          // If index day is -1 (getUTCDate timezone), is actual day
+          if(indexDay<0) indexDay = 0;
+          
+          // Destructuring weather of the day week number from now
+          i.temp = data.daily[indexDay].temp;
         }
         meetupsWeather.push(i);
       });

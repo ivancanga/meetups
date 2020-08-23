@@ -4,11 +4,105 @@
   box-sizing: border-box;
 }
 
+.schedule-admin {
+  &_title {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 24px 0;
+    font-size: 22px;
+  }
+  &_wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 72px;
+    background-color: white;
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 24px;
+    border-radius: 5px;
+    padding-bottom: 48px;
+    .MuiPickersStaticWrapper-staticWrapperRoot {
+      width: fit-content;
+      .MuiPickersDay-daySelected {
+        background-color: #af7b43;
+      }
+    }
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 12px 0;
+    }
+    .schedule {
+      &_title {
+        &::before {
+          content: url("../../assets/icon-schedule.png");
+          width: 32px;
+          height: 32px;
+        }
+      }
+    }
+    .form {
+      max-width: 320px;
+      &_title {
+        &::before {
+          content: url("../../assets/icon-form.png");
+          width: 32px;
+          height: 32px;
+        }
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 12px 0 6px 0;
+        margin: 6px 0;
+        font-size: 16px;
+        border-bottom: 1px solid #c9c9c9;
+      }
+      textarea {
+        min-height: 170px;
+        max-width: 320px;
+      }
+
+      button {
+        display: flex;
+        justify-content: center;
+        margin: 24px auto;
+        padding: 10px;
+        width: 172px;
+        border-radius: 25px;
+        background: #c9c9c9;
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+        span {
+          font-weight: 500;
+        }
+      }
+      .message {
+        font-size: 13px;
+        margin-top: 6px;
+        color: #a87640;
+      }
+    }
+  }
+  .message {
+    position: absolute;
+    bottom: 12px;
+    font-size: 12px;
+    padding: 12px;
+    background: #90ee9040;
+    border-radius: 5px;
+  }
+}
+
 .schedule-list {
   padding: 24px 0;
   &_title {
     position: relative;
-    max-width: 50vw;
+    max-width: 1024px;
     margin: 24px auto;
     font-size: 22px;
     .refresh {
@@ -22,13 +116,14 @@
     margin: 0 auto;
     padding: 24px;
     border-radius: 5px;
-    max-width: 50vw;
+    max-width: 1024px;
     margin: 0 auto;
   }
   .meetup-wrapper {
     border-radius: 6px;
     margin: 18px 12px;
     padding: 12px;
+    gap: 24px;
     display: flex;
     -webkit-box-shadow: 0px 5px 13px -6px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 5px 13px -6px rgba(0, 0, 0, 0.75);
@@ -92,6 +187,104 @@
           display: block;
         }
       }
+      &-data {
+        max-width: 290px;
+        width: 100%;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-radius: 6px;
+        margin: 0 12px;
+        padding: 0 12px;
+        .meetup-name {
+          font-weight: bold;
+          display: block;
+          border-bottom: 1px solid lightgray;
+          margin-bottom: 3px;
+          padding-bottom: 4px;
+        }
+        .note {
+          background-image: url("../../assets/icon-note.png");
+          width: 30px;
+          height: 30px;
+          display: block;
+        }
+      }
+      &-birras {
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        right: 0;
+        gap: 6px;
+        margin: 0 12px;
+        padding: 0 12px;
+        border-radius: 6px;
+        max-width: 210px;
+        width: 100%;
+        .birras {
+          background-image: url("../../assets/icon-beer2.png");
+          width: 30px;
+          height: 30px;
+          display: block;
+        }
+      }
     }
+    .suscribe {
+      width: 100px;
+      display: flex;
+      justify-content: center;
+      height: fit-content;
+      align-self: center;
+      border: 2px solid #44321e;
+      border-left: 5px solid #44321e;
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #7e5b35;
+      color: white;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: 0.2s ease-in-out;
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+    .suscribed {
+      display: flex;
+      background: lightgreen;
+      padding: 6px 12px;
+      border-radius: 6px;
+      height: 42px;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+    }
+    .checked {
+      background-image: url("../../assets/icon-suscribed.png");
+      width: 30px;
+      height: 30px;
+      display: block;
+      margin-right: 6px;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .schedule-admin_title {
+    margin: 0 12px;
+  }
+  .schedule-list_title {
+    margin: 12px;
+    margin-bottom: 24px;
+  }
+  .schedule-admin_wrapper,
+  .schedule-list .meetup-wrapper {
+    flex-flow: column;
+    align-items: center;
+    row-gap: 24px;
+  }
+  .schedule-list_wrapper {
+    padding: 12px;
   }
 }

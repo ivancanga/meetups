@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
 import calculateBirras from "../../services/birras";
 
 import { Tooltip } from "@material-ui/core";
 
-function Meetup({ meetup, admin }) {
+function Meetup({ meetup, dataUser, suscribeMeetup }) {
+  const [loading, setLoading] = useState(false);
+
   const day = new Date(meetup.date.seconds * 1000).getDate();
   const month = new Date(meetup.date.seconds * 1000).getMonth() + 1;
   const assistants = meetup.assistants.length;
+  let suscribed = false;
 
   if (meetup.temp)
     meetup.data = calculateBirras(meetup.temp.max.toFixed(1), assistants);
+
+  meetup.assistants.forEach((e) => {
+    if (e === dataUser.userId) suscribed = true;
+  });
 
   return (
     <div className="meetup-wrapper">
@@ -18,7 +25,7 @@ function Meetup({ meetup, admin }) {
         {day}/<span className="month">{month}</span>
       </p>
       <div className="meetup-weather">
-        <p className="weather-wrapper">
+        <p className="weather-wrapper" title="Clima">
           {meetup.temp ? (
             <>
               <span className="weather"></span>
@@ -37,23 +44,46 @@ function Meetup({ meetup, admin }) {
           )}
         </p>
       </div>
-      <p className="meetup-assistants">
+      <p className="meetup-assistants" title="Asistentes">
         <span className="people"></span>
         {assistants}
       </p>
-      <div>
-        <p className="meetup-name">{meetup.name}</p>
-        <p className="meetup-description">{meetup.description}</p>
+      <div className="meetup-data">
+        <span className="note"></span>
+        <span>
+          <p className="meetup-name">{meetup.name}</p>
+          <p className="meetup-description">{meetup.description}</p>
+        </span>
       </div>
-      {admin &&
-        (meetup.temp && meetup.assistants.length ? (
-          <div>
-            Necesitás {meetup.data.birras} birras, encargá {meetup.data.cajon}{" "}
-            cajon/es.
+
+      {dataUser.admin ? (
+        meetup.temp && meetup.assistants.length ? (
+          <div className="meetup-birras">
+            <span className="birras"></span>
+            <span>
+              Necesitás {meetup.data.birras} birras,
+              <br /> encargá {meetup.data.cajon} cajon/es.
+            </span>
           </div>
         ) : (
-          <div>Aún no hay birras que comprar :(</div>
-        ))}
+          <div className="meetup-birras">
+            <span className="birras"></span> Aún no hay birras <br /> que
+            comprar :(
+          </div>
+        )
+      ) : !suscribed ? (
+        <button
+          className="suscribe"
+          onClick={() => suscribeMeetup(meetup.uuid, setLoading)}
+        >
+          {loading ? <div className="loader"></div> : <span>Inscribirse</span>}
+        </button>
+      ) : (
+        <span className="suscribed">
+          <span className="checked"></span>
+          Ya estas suscripto.
+        </span>
+      )}
     </div>
   );
 }

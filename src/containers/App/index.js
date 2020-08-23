@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 
-import firebase from "../../config/firebase";
+import firebaseServices from "../../services/firebase-services";
 
 import Header from "../Header";
 import Home from "../Home";
-import HomeAdmin from "../HomeAdmin";
 import Register from "../Register";
 import Login from "../Login";
 
@@ -14,12 +13,7 @@ const App = () => {
   const [auth, setAuth] = useState({ isAuth: false });
 
   const onLogin = (id) => {
-    firebase.db
-      .doc(`users/${id}`)
-      .get()
-      .then((doc) => {
-        setAuth({ isAuth: true, dataUser: doc.data() });
-      });
+    firebaseServices.loginUser(id, setAuth);
   };
 
   return (
@@ -29,13 +23,7 @@ const App = () => {
         <Route
           path="/"
           exact
-          component={() =>
-            !auth.dataUser.admin ? (
-              <Home dataUser={auth.dataUser} />
-            ) : (
-              <HomeAdmin dataUser={auth.dataUser} />
-            )
-          }
+          component={() => <Home dataUser={auth.dataUser} />}
         />
       ) : (
         <Route path="/" exact component={() => <Login onLogin={onLogin} />} />

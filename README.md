@@ -16,6 +16,11 @@ Desafío técnico meetups para Santander Rio Tecnología. Implementación de web
 
 ### Admin
 
+```
+username: admin
+password: 
+```
+
 - Panel para agendar una meetup, con un datepicker (MaterialUI), título y descripción de evento.
 
 - Sección de meetups agendadas, informando fecha, clima, asistentes al evento, información, y cantidad de cervezas para pedir a proveedor.
